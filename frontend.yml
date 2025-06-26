@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: Deployment
+metadata: 
+  name: frontend
+namespace: test
+# labels of deployment rsource
+labels:
+  app: frontend
+  tier: frontend
+  project: expence
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+      tier: frontend
+      project: expence
+template:
+  metadata:
+    labels:
+      app: frontend
+      tier: frontend
+      project: expence
+  spec:
+    containers:
+    - name: nginx
+      image: joindevops/frontend:1.1.0
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: frontend # if we did not give any type of service it will take by default as clusterIP
+spec:
+  type: LoadBalancer
+  selector: # labels are used as selectors
+    app: frontend
+    tier: frontend
+    project: expence
+  ports:
+  -  protocol: TCP
+     port: 80 # service port
+     targetPort: 8080 # frontend port madatory
+
