@@ -1,45 +1,42 @@
----
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: backend
   namespace: expense
-# labels of deployment rsource
-labels:
-  app: backend
-  tier: backend
-  project: expence
-spec: 
+  # labels of deployment resource
+  labels:
+    app: backend
+    tier: backend
+    project: expense
+spec:
   replicas: 1
   selector:
     matchLabels:
       app: backend
       tier: backend
-      project: expence
-template:
-  metadata:
-    labels:
-      app: backend
-      tier: backend
-      project: expence
-  spec:
-    containers:
-    - name: nginx
-      image: joindevops/backend:1.1.0
-
+      project: expense
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: backend
+        project: expense
+    spec:
+      containers:
+      - name: nginx
+        image: joindevops/backend:1.0.0
 ---
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
- name: backend
- namespace: expense # if we did not give any type of service it will take by default as clusterIP
+  name: backend
+  namespace: expense
 spec:
   selector: # labels are used as selectors
     app: backend
     tier: backend
-    project: expence
+    project: expense
   ports:
-  -  protocol: TCP
-     port: 8080 # service port
-     targetPort: 8080 # backend port madatory
-
+  - protocol: TCP
+    port: 8080 # service port
+    targetPort: 8080
